@@ -1,0 +1,33 @@
+#docker run -d --rm -p 9000:9000 \
+#    -e KAFKA_BROKERCONNECT=host:port,host:port \
+#    -e JVM_OPTS="-Xms32M -Xmx64M" \
+#    -e SERVER_SERVLET_CONTEXTPATH="/" \
+#    obsidiandynamics/kafdrop:latest
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafdrop
+  namespace: sc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: kafdrop
+  template:
+    metadata:
+      labels:
+        component: kafdrop
+    spec:
+      containers:
+      - name: kafdrop
+        image: obsidiandynamics/kafdrop:latest
+        ports:
+          - containerPort: 9000
+        env:
+          - name: KAFKA_BROKERCONNECT
+            value: "kafka:9092"
+          - name: JVM_OPTS
+            value: "-Xms32M -Xmx64M"
+          - name: SERVER_SERVLET_CONTEXTPATH
+            value: "/"

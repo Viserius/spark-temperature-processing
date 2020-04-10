@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storagemiddleware-deployment
+  namespace: sc
+  labels:
+    app: storagemiddleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storagemiddleware
+  template:
+    metadata:
+      labels:
+        app: storagemiddleware
+    spec:
+      containers:
+      - name: storagemiddleware
+        image: soelmanm/scalablecomputing:storagemiddleware
+        env: 
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka-1-service,kafka-2-service,kafka-3-service"
+        - name: KAFKA_BOOTSTRAP_SERVERS_WITH_IP
+          value: "kafka-1-service:9092,kafka-2-service:9092,kafka-3-service:9092"
+        - name: KAFKA_INPUT_TOPIC
+          value: temperatures-in
+        - name: CASSANDRA_SEEDS
+          value: cassandra-service
+        - name: CASSANDRA_PORT
+          value: "9042"
+        - name: KAFKA_TOPIC_PARTITIONS
+          value: "3"
+        - name: KAFKA_TOPIC_REPLICAS
+          value: "2"

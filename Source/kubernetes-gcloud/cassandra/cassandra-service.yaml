@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cassandra-service
+  name: cassandra-service
+spec:
+  clusterIP: None
+  ports:
+  - name: cql
+    port: 9042
+    targetPort: 9042
+  selector:
+    app: cassandra
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cassandra-service-external
+  name: cassandra-service-external
+spec:
+  type: LoadBalancer
+  ports:
+  - name: cql
+    port: 9042
+    targetPort: 9042
+    nodePort: 30042
+  selector:
+    app: cassandra
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  externalTrafficPolicy: Cluster

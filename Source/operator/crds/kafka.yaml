@@ -1,0 +1,9 @@
+apiVersion: scalablecomputing.roperator.com/v1alpha1
+kind: KafkaCluster
+metadata:
+  namespace: default
+  name: foo
+spec:
+  zkServiceName: zookeeper
+  brokerCount: 3
+  kfServiceName: kafka

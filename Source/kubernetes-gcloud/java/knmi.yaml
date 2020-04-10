@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: knmi-deployment
+  labels:
+    app: knmi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: knmi
+  template:
+    metadata:
+      labels:
+        app: knmi
+    spec:
+      containers:
+      - name: knmi
+        image: soelmanm/scalablecomputing:simulator
+        imagePullPolicy: Always
+        env: 
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: "kafka-1-service:9092,kafka-2-service:9092,kafka-3-service:9092"
+          - name: KAFKA_TOPIC_PARTITIONS
+            value: "3"
+          - name: KAFKA_TOPIC_REPLICAS
+            value: "2"
+          - name: ONLY_FAKE_DATASETS
+            value: "false"
+          - name: THREADS
+            value: "1"
+          - name: FIXED_DELAY_IN_MS
+            value: "20000"
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1Gi
+          requests:
+            cpu: "125m"
+            memory: 64Mi

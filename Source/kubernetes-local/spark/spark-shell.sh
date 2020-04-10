@@ -1,0 +1,1 @@
+kubectl run spark-base --rm -it --labels="app=spark-client" --namespace="sc" --image bde2020/spark-base:2.4.5-hadoop2.7 -- bash ./spark/bin/spark-shell --master spark://spark-master:7077 --conf spark.driver.host=spark-client

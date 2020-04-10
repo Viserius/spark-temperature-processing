@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulator-deployment
+  namespace: sc
+  labels:
+    app: simulator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simulator
+  template:
+    metadata:
+      labels:
+        app: simulator
+    spec:
+      containers:
+      - name: simulator
+        image: soelmanm/scalablecomputing:simulator
+        env: 
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: "kafka-1-service:9092,kafka-2-service:9092,kafka-3-service:9092"
+          - name: KAFKA_TOPIC_PARTITIONS
+            value: "3"
+          - name: KAFKA_TOPIC_REPLICAS
+            value: "2"
+          - name: ONLY_FAKE_DATASETS
+            value: "true"
+          - name: THREADS
+            value: "3"
+          - name: FIXED_DELAY_IN_MS
+            value: "1000"

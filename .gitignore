@@ -1,0 +1,10 @@
+.idea/
+
+target/
+
+project/*
+project/assembly.sbt
+
+out/
+
+**.jar
